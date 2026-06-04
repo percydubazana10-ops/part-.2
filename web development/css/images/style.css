@@ -1,0 +1,823 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,0,700;1,400&family=Lato:wght@300;700&display=swap');
+ @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+/* ================================================================
+   THE SHOOTING RANGE  —  TACTICAL ELITE CSS
+   Aesthetic: Military-Industrial · Dark · Cinematic · Precise
+   Fonts: Bebas Neue (display) · Rajdhani (body) · Share Tech Mono
+   Palette: Deep Black · Olive Drab · Hot Brass · Concrete White
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   CUSTOM CURSOR — crosshair
+   ---------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  cursor: crosshair;
+}
+
+/* ----------------------------------------------------------------
+   CSS VARIABLES
+   ---------------------------------------------------------------- */
+:root {
+  /* Colours */
+  --black:          #0d0e0b;
+  --black-mid:      #161810;
+  --charcoal:       #1e2018;
+  --charcoal-mid:   #2a2d22;
+  --od-green:       #3d4f1e;
+  --od-green-mid:   #526828;
+  --od-green-light: #6b8432;
+  --brass:          #c49a2a;
+  --brass-light:    #e8bb45;
+  --brass-dim:      #8a6c1a;
+  --brass-glow:     rgba(196,154,42,0.18);
+  --concrete:       #d4cfc4;
+  --concrete-mid:   #a8a49a;
+  --concrete-dim:   #706d65;
+  --white:          #f2efe8;
+  --red-alert:      #c0392b;
+
+  /* Typography */
+  --font-display:   'Bebas Neue', Impact, 'Arial Narrow', sans-serif;
+  --font-body:      'Rajdhani', 'Trebuchet MS', sans-serif;
+  --font-mono:      'Share Tech Mono', 'Courier New', monospace;
+
+  /* Spacing */
+  --max-w:          1200px;
+  --gap:            24px;
+
+  /* Effects */
+  --glow-brass:     0 0 18px rgba(196,154,42,0.35), 0 0 40px rgba(196,154,42,0.12);
+  --shadow:         0 4px 24px rgba(0,0,0,0.55);
+  --shadow-lg:      0 8px 48px rgba(0,0,0,0.7);
+  --ease:           0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+
+  /* Original vars kept for compatibility */
+  --cream:          #ede6d6;
+  --gold:           #c49a2a;
+  --gold-light:     #e8bb45;
+  --gold-dark:      #8a6c1a;
+  --shadow-old:     rgba(0,0,0,0.15);
+  --font-heading:   'Bebas Neue', Impact, sans-serif;
+}
+
+/* ----------------------------------------------------------------
+   KEYFRAME ANIMATIONS
+   ---------------------------------------------------------------- */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scanline {
+  0%   { background-position: 0 0; }
+  100% { background-position: 0 100%; }
+}
+
+@keyframes brassFlicker {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.7; }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: var(--glow-brass); }
+  50%       { box-shadow: 0 0 30px rgba(196,154,42,0.6), 0 0 60px rgba(196,154,42,0.2); }
+}
+
+@keyframes borderDraw {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0% 0 0); }
+}
+
+/* ----------------------------------------------------------------
+   RESET & BASE
+   ---------------------------------------------------------------- */
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--black);
+  background-image:
+    /* Fine grid lines */
+    linear-gradient(rgba(196,154,42,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(196,154,42,0.04) 1px, transparent 1px),
+    /* Vignette */
+    radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.65) 100%);
+  background-size: 40px 40px, 40px 40px, 100% 100%;
+  color: var(--concrete);
+  font-family: var(--font-body);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.75;
+  min-height: 100vh;
+  /* Scanline overlay */
+  position: relative;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--brass-light);
+  text-decoration: none;
+  transition: color var(--ease);
+}
+
+a:hover { color: var(--brass); }
+
+/* ----------------------------------------------------------------
+   TYPOGRAPHY
+   ---------------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2 {
+  font-family: var(--font-display);
+  letter-spacing: 0.06em;
+  line-height: 1.05;
+  text-transform: uppercase;
+  color: var(--white);
+  margin-bottom: 0.8rem;
+}
+
+h1 { font-size: clamp(2.4rem, 6vw, 4.5rem); }
+h2 { font-size: clamp(2rem, 4vw, 3.2rem);  color: var(--brass-light); }
+h3 { font-size: clamp(1.6rem, 3vw, 2.4rem); }
+h4 { font-size: 1.8rem; }
+h5 { font-size: 1.5rem; }
+h6 { font-size: 1.3rem; }
+
+/* Non-standard h tags used in HTML (h7, h8, plain h) */
+h7, [class^="h"] {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--brass-light);
+  display: block;
+  margin-bottom: 0.8rem;
+}
+
+p, p1, p2, p3, p4, p5, p6, p7 {
+  margin-bottom: 1.25rem;
+  color: var(--concrete-mid);
+  font-size: 1.05rem;
+  font-weight: 400;
+  line-height: 1.85;
+  display: block;
+}
+
+hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--brass), transparent);
+  margin: 2.5rem 0;
+  opacity: 0.5;
+}
+
+/* ----------------------------------------------------------------
+   HEADER
+   ---------------------------------------------------------------- */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 56px;
+  height: 76px;
+  background: linear-gradient(to bottom, rgba(13,14,11,0.98) 0%, rgba(13,14,11,0.92) 100%);
+  border-bottom: 1px solid rgba(196,154,42,0.35);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: 0 2px 32px rgba(0,0,0,0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  /* Animated brass bottom line */
+  overflow: hidden;
+}
+
+header::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(to right, var(--od-green-mid), var(--brass), var(--brass-light), var(--brass), var(--od-green-mid));
+  animation: brassFlicker 4s ease-in-out infinite;
+}
+
+/* Corner tactical brackets */
+header::after {
+  content: '';
+  position: absolute;
+  top: 10px; left: 10px;
+  width: 20px; height: 20px;
+  border-top: 2px solid var(--brass-dim);
+  border-left: 2px solid var(--brass-dim);
+  opacity: 0.5;
+}
+
+/* Site logo / em tag */
+header em,
+.logo,
+header > em {
+  font-family: var(--font-display);
+  font-style: normal;
+  font-size: 1.55rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--white) !important;
+  text-shadow: var(--glow-brass);
+  animation: slideInLeft 0.6s ease both;
+  position: relative;
+  padding-left: 20px;
+}
+
+header > em::before,
+.logo::before {
+  content: '◈';
+  position: absolute;
+  left: 0;
+  color: var(--brass);
+  font-size: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+header img {
+  height: 44px;
+  width: auto;
+  border-radius: 2px;
+  border: 1px solid var(--brass-dim);
+  filter: brightness(0.9) contrast(1.1);
+  transition: filter var(--ease), box-shadow var(--ease);
+}
+
+header img:hover {
+  filter: brightness(1.1);
+  box-shadow: var(--glow-brass);
+}
+
+/* ----------------------------------------------------------------
+   NAVIGATION
+   ---------------------------------------------------------------- */
+nav {
+  display: flex;
+  align-items: center;
+}
+
+nav div, nav ul {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 0;
+  flex-wrap: wrap;
+}
+
+nav li { display: flex; }
+
+nav a {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--concrete-mid) !important;
+  text-decoration: none;
+  padding: 8px 18px;
+  position: relative;
+  transition: color var(--ease);
+}
+
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 18px; right: 18px;
+  height: 1px;
+  background: var(--brass);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--ease);
+}
+
+nav a:hover {
+  color: var(--brass-light) !important;
+}
+
+nav a:hover::after {
+  transform: scaleX(1);
+}
+
+nav a:visited { color: var(--concrete-mid) !important; }
+nav a:active  { color: var(--brass) !important; }
+
+/* ----------------------------------------------------------------
+   BODY PAGE BACKGROUNDS
+   ---------------------------------------------------------------- */
+body.main,
+body.about-layout,
+body.gallery.grid,
+body[style*="darkolivegreen"],
+body[style*="rgb(40, 56, 12)"] {
+  background-color: var(--black) !important;
+  background-image:
+    linear-gradient(rgba(196,154,42,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(196,154,42,0.035) 1px, transparent 1px),
+    radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.65) 100%) !important;
+  background-size: 40px 40px, 40px 40px, 100% 100% !important;
+}
+
+/* ----------------------------------------------------------------
+   HERO SECTION
+   ---------------------------------------------------------------- */
+.hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 580px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.hero img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  filter: brightness(0.55) contrast(1.15) saturate(0.7);
+  transition: transform 8s ease;
+}
+
+.hero:hover img { transform: scale(1.03); }
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgba(13,14,11,0.92) 0%, rgba(13,14,11,0.3) 60%, transparent 100%),
+    linear-gradient(to right, rgba(13,14,11,0.5) 0%, transparent 50%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 64px 72px;
+}
+
+.hero-overlay h1,
+.hero-overlay h2 {
+  animation: fadeUp 0.8s ease both;
+  text-shadow: 0 2px 24px rgba(0,0,0,0.7);
+}
+
+.hero-overlay h1 { animation-delay: 0.1s; }
+.hero-overlay h2 { animation-delay: 0.25s; color: var(--brass-light); }
+.hero-overlay p  { animation: fadeUp 0.8s 0.4s ease both; }
+
+/* ----------------------------------------------------------------
+   INLINE IMAGES (Home, About pages — 3 images in a row)
+   ---------------------------------------------------------------- */
+body > img,
+.gallery-item-img {
+  display: inline-block !important;
+  width: 32% !important;
+  height: 220px !important;
+  object-fit: cover;
+  border: 1px solid rgba(196,154,42,0.25);
+  filter: brightness(0.75) contrast(1.1) saturate(0.65);
+  transition: filter var(--ease), transform var(--ease), box-shadow var(--ease);
+  vertical-align: top;
+  margin: 0 0.4% 2px;
+}
+
+body > img:hover,
+.gallery-item-img:hover {
+  filter: brightness(0.95) contrast(1.1) saturate(0.85);
+  transform: scale(1.02);
+  box-shadow: 0 0 0 2px var(--brass), var(--shadow);
+  position: relative;
+  z-index: 2;
+}
+
+/* Gallery page full layout */
+body.gallery.grid {
+  padding: 48px 48px;
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  align-items: start;
+}
+
+body.gallery.grid img.gallery-item-img {
+  display: block !important;
+  width: 100% !important;
+  height: 280px !important;
+  margin: 0;
+}
+
+body.gallery.grid br { display: none; }
+
+/* ----------------------------------------------------------------
+   PAGE CONTENT AREAS — Home / About / Services / Contact
+   ---------------------------------------------------------------- */
+
+/* All body content gets max-width and centred */
+body > h1, body > h2, body > h3, body > h4, body > h5, body > h6,
+body > p, body > p1, body > p2, body > p3, body > p4, body > p5, body > p6,
+body > hr, body > br, body > h, body > h7,
+body > H2, body > H7, body > P3 {
+  display: block;
+  max-width: 860px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 40px;
+  padding-right: 40px;
+  text-align: center;
+}
+
+body > h1 {
+  padding-top: 72px;
+  color: var(--white) !important;
+  font-family: var(--font-display) !important;
+  font-size: clamp(2.4rem, 5vw, 4rem) !important;
+  text-shadow: 0 0 40px rgba(196,154,42,0.2);
+  animation: fadeUp 0.7s ease both;
+}
+
+body > h2, body > H2 {
+  color: var(--brass-light) !important;
+  font-family: var(--font-display) !important;
+  font-size: clamp(1.4rem, 3vw, 2.4rem) !important;
+  padding-top: 32px;
+}
+
+body > h3, body > h4, body > h5, body > h6, body > h7, body > H7 {
+  color: var(--brass-light) !important;
+  font-family: var(--font-display) !important;
+  padding-top: 24px;
+}
+
+body > p, body > p1, body > p2, body > p3,
+body > p4, body > p5, body > p6, body > P3 {
+  color: var(--concrete-mid) !important;
+  font-size: 1.05rem !important;
+  line-height: 1.9 !important;
+  font-family: var(--font-body) !important;
+}
+
+/* ----------------------------------------------------------------
+   ABOUT PAGE — styled text blocks
+   ---------------------------------------------------------------- */
+.about-layout body,
+body.about-layout {
+  padding-bottom: 80px;
+}
+
+body.about-layout > p1,
+body.about-layout > p2,
+body.about-layout > p3 {
+  background: linear-gradient(135deg, rgba(61,79,30,0.2) 0%, rgba(196,154,42,0.05) 100%);
+  border: 1px solid rgba(196,154,42,0.18);
+  border-left: 3px solid var(--brass);
+  padding: 28px 40px !important;
+  margin: 0 auto 24px !important;
+  text-align: left !important;
+  border-radius: 0 4px 4px 0;
+  transition: border-color var(--ease), background var(--ease);
+}
+
+body.about-layout > p1:hover,
+body.about-layout > p2:hover,
+body.about-layout > p3:hover {
+  border-left-color: var(--brass-light);
+  background: linear-gradient(135deg, rgba(61,79,30,0.3) 0%, rgba(196,154,42,0.1) 100%);
+}
+
+/* ----------------------------------------------------------------
+   SERVICES PAGE
+   ---------------------------------------------------------------- */
+body:not(.about-layout):not(.gallery):not(.main) > H2,
+body:not(.about-layout):not(.gallery):not(.main) > h3,
+body:not(.about-layout):not(.gallery):not(.main) > h4,
+body:not(.about-layout):not(.gallery):not(.main) > h5,
+body:not(.about-layout):not(.gallery):not(.main) > h6 {
+  position: relative;
+  padding-left: 52px !important;
+  text-align: left !important;
+  max-width: 800px;
+}
+
+body:not(.about-layout):not(.gallery):not(.main) > H2::before,
+body:not(.about-layout):not(.gallery):not(.main) > h3::before,
+body:not(.about-layout):not(.gallery):not(.main) > h4::before,
+body:not(.about-layout):not(.gallery):not(.main) > h5::before,
+body:not(.about-layout):not(.gallery):not(.main) > h6::before {
+  content: '//';
+  position: absolute;
+  left: 40px;
+  color: var(--brass);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* ----------------------------------------------------------------
+   CONTACT PAGE — body.main
+   ---------------------------------------------------------------- */
+body.main > h1 {
+  padding-top: 64px;
+}
+
+body.main > h,
+body.main > H {
+  display: block;
+  font-family: var(--font-body) !important;
+  font-size: 1rem !important;
+  color: var(--concrete-mid) !important;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 4px;
+  letter-spacing: 0.04em;
+}
+
+body.main > h2 { font-size: 1.6rem !important; padding-top: 48px; }
+body.main > h3 { font-size: 1.4rem !important; padding-top: 40px; }
+body.main > h4 { font-size: 1.3rem !important; padding-top: 40px; }
+body.main > h5 { font-size: 1.3rem !important; padding-top: 40px; }
+
+/* ----------------------------------------------------------------
+   BUTTONS & CALL TO ACTION LINKS
+   ---------------------------------------------------------------- */
+button {
+  background: transparent;
+  border: 1px solid var(--brass);
+  padding: 0;
+  cursor: crosshair;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--ease);
+}
+
+button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--brass);
+  transform: translateX(-105%);
+  transition: transform var(--ease);
+  z-index: 0;
+}
+
+button:hover::before { transform: translateX(0); }
+button:hover { box-shadow: var(--glow-brass); }
+button:hover { transform: translateY(-2px); }
+
+button a {
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  padding: 13px 36px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--brass-light);
+  text-decoration: none;
+  transition: color var(--ease);
+}
+
+button:hover a { color: var(--black); }
+
+button a:hover, button a:visited, button a:active {
+  text-decoration: none;
+}
+
+/* Styled plain <a> links used as CTAs */
+a.cn,
+body > a[href*="theshootingrange"],
+body > a[style*="aqua"],
+body > a[style*="background"] {
+  display: inline-block !important;
+  margin: 32px auto !important;
+  padding: 14px 44px !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.8rem !important;
+  letter-spacing: 0.22em !important;
+  text-transform: uppercase !important;
+  color: var(--brass-light) !important;
+  background: transparent !important;
+  border: 1px solid var(--brass) !important;
+  text-decoration: none !important;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--ease) !important;
+}
+
+a.cn::before,
+body > a[href*="theshootingrange"]::before,
+body > a[style*="aqua"]::before,
+body > a[style*="background"]::before {
+  content: '→ ';
+}
+
+a.cn:hover,
+body > a[href*="theshootingrange"]:hover,
+body > a[style*="aqua"]:hover,
+body > a[style*="background"]:hover {
+  color: var(--black) !important;
+  background: var(--brass) !important;
+  box-shadow: var(--glow-brass) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* ----------------------------------------------------------------
+   FOOTER
+   ---------------------------------------------------------------- */
+footer {
+  background: var(--black-mid);
+  border-top: 1px solid rgba(196,154,42,0.3);
+  color: var(--concrete);
+  padding: 56px 64px 36px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: start;
+  gap: 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+footer::before {
+  content: 'TSR';
+  position: absolute;
+  right: 40px;
+  bottom: -20px;
+  font-family: var(--font-display);
+  font-size: 9rem;
+  color: rgba(196,154,42,0.04);
+  letter-spacing: 0.1em;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Top brass accent line */
+footer::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--brass-dim), var(--brass), var(--brass-dim), transparent);
+  animation: brassFlicker 5s ease-in-out infinite;
+}
+
+footer img {
+  height: 48px;
+  width: auto;
+  border-radius: 2px;
+  border: 1px solid var(--brass-dim);
+  filter: brightness(0.85);
+}
+
+.footer-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.footer-contact-item img {
+  height: 18px;
+  width: 18px;
+  flex-shrink: 0;
+  opacity: 0.6;
+  margin-top: 3px;
+}
+
+.footer-contact-item p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--concrete-mid);
+  line-height: 1.5;
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+footer button { align-self: start; }
+
+/* ----------------------------------------------------------------
+   UTILITY / MISC
+   ---------------------------------------------------------------- */
+
+/* Override any black color inline styles on text */
+*[style*="color: black"],
+*[style*="color:black"] {
+  color: var(--concrete) !important;
+}
+
+/* Override aqua backgrounds */
+*[style*="background-color: aqua"],
+*[style*="background-color:aqua"] {
+  background-color: transparent !important;
+}
+
+/* em tag used as logo */
+em {
+  font-style: normal;
+}
+
+/* Spacing after header before body content */
+body > h1:first-of-type {
+  margin-top: 0;
+}
+
+/* ----------------------------------------------------------------
+   RESPONSIVE
+   ---------------------------------------------------------------- */
+@media (max-width: 900px) {
+  header {
+    padding: 12px 20px;
+    height: auto;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  nav div, nav ul {
+    flex-wrap: wrap;
+    gap: 2px;
+  }
+
+  nav a {
+    padding: 6px 10px;
+    font-size: 0.7rem;
+  }
+
+  footer {
+    grid-template-columns: 1fr;
+    padding: 40px 24px 28px;
+    gap: 32px;
+  }
+
+  body > h1, body > h2, body > h3,
+  body > p, body > p1, body > p2, body > p3 {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  body.gallery.grid {
+    grid-template-columns: 1fr;
+    padding: 24px;
+  }
+
+  body.gallery.grid img.gallery-item-img {
+    height: 220px !important;
+  }
+
+  body > img {
+    width: 95% !important;
+    display: block !important;
+    margin: 8px auto !important;
+    height: 200px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.6rem; }
+
+  header em, .logo {
+    font-size: 1.1rem;
+  }
+
+  nav a { font-size: 0.65rem; padding: 5px 8px; }
+}
